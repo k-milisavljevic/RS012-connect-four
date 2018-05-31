@@ -1,6 +1,10 @@
 <RCC>
-    <qresource prefix="/MyFiles">
-        <file>cpex_background.png</file>
+    <qresource prefix="/grafika">
+        <file>w3.jpg</file>
+        <file>icon.jpeg</file>
         <file>board.png</file>
+        <file>r1.png</file>
+        <file>blue.png</file>
+        <file>bboard.png</file>
     </qresource>
 </RCC>

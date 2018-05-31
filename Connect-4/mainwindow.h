@@ -22,6 +22,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+public slots:
+    void insertAtBoard(int);
 };
 
 #endif // MAINWINDOW_H
