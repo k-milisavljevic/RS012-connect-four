@@ -22,9 +22,22 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    int player;
+    // 0 - empty field
+    // 1 - red player
+    // 2 - blue player
+   int matrix[6][7] = {{0, 0, 0, 0, 0, 0, 0},
+                       {0, 0, 0, 0, 0, 0, 0},
+                       {0, 0, 0, 0, 0, 0, 0},
+                       {0, 0, 0, 0, 0, 0, 0},
+                       {0, 0, 0, 0, 0, 0, 0},
+                       {0, 0, 0, 0, 0, 0, 0},
+                     };
 
 public slots:
-    void insertAtBoard(int);
+    int  restrictionMove(int,int);
+    void insertAtBoard(int, int);
+    int checkCoordinates(int, int);
 };
 
 #endif // MAINWINDOW_H
