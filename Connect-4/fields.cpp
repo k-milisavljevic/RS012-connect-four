@@ -17,7 +17,6 @@ void fields::mouseMoveEvent(QMouseEvent *ev)
     emit Mouse_Pos();
 }
 
-
 void fields::leaveEvent(QEvent *)
 {
     emit Mouse_Left();

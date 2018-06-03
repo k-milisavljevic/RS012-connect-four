@@ -23,6 +23,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     int player;
+    bool isComputer;
     // 0 - empty field
     // 1 - red player
     // 2 - blue player
@@ -35,9 +36,17 @@ private:
                      };
 
 public slots:
-    int  restrictionMove(int,int);
+  int  restrictionMove(int,int);
     void insertAtBoard(int, int);
-    int checkCoordinates(int, int);
+    bool checkForWinner(int,int,int);
+    bool checkColumns(int,int);
+    bool checkRows(int,int);
+    bool checkDiagonal(int,int,int);
+    void endGame(int);
+    void newGame();
+    int gameType();
+    void computerPlaying(int, int);
+    void checkIfEqual();
 };
 
 #endif // MAINWINDOW_H
