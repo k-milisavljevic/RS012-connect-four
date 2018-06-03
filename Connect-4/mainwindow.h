@@ -23,7 +23,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     int player;
+    int Xcor;
+    int minX,minY;
+    int Ycor;
     bool isComputer;
+    int maxDepth;
     // 0 - empty field
     // 1 - red player
     // 2 - blue player
@@ -36,7 +40,7 @@ private:
                      };
 
 public slots:
-  int  restrictionMove(int,int);
+    int  restrictionMove(int,int);
     void insertAtBoard(int, int);
     bool checkForWinner(int,int,int);
     bool checkColumns(int,int);
@@ -46,7 +50,12 @@ public slots:
     void newGame();
     int gameType();
     void computerPlaying(int, int);
-    void checkIfEqual();
+    bool checkIfEqual();
+    int minMaxMax(int,int,int,int, int);
+    int minMaxMin(int,int,int,int,int);
+    int countConnected();
+    int calculateScore(int,int);
+    void gameLevel();
 };
 
 #endif // MAINWINDOW_H
