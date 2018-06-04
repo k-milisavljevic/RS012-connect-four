@@ -56,30 +56,31 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="testLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>440</y>
-      <width>171</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>current positon  X= Y=</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="testLabel2">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>200</x>
       <y>450</y>
-      <width>131</width>
-      <height>17</height>
+      <width>211</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tlwg Typist</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="player">
@@ -932,7 +933,6 @@
     </layout>
    </widget>
    <zorder>background</zorder>
-   <zorder>testLabel</zorder>
    <zorder>testLabel2</zorder>
    <zorder>player</zorder>
    <zorder>gridLayoutWidget</zorder>

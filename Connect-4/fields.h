@@ -16,7 +16,7 @@ public:
     void mouseMoveEvent(QMouseEvent *ev);
     void leaveEvent(QEvent *);
     int x,y;
-  //  fields();
+
 signals:
     void Mouse_pressed();
     void Mouse_Left();

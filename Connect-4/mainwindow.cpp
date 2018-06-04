@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     newGame();
 
 
-
 }
 
 
@@ -34,7 +33,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::Mouse_current_pos()
 {
-    ui->testLabel->setText(QString("X:%1,Y:%2").arg(ui->mouseArea->x).arg(ui->mouseArea->y));
 
 }
 
@@ -50,88 +48,97 @@ void MainWindow::Mouse_left()
 
 int MainWindow::restrictionMove(int tmpX,int tmpY){
 
-    if (matrix[tmpY][tmpX]!=0)
+    if (matrix[tmpY][tmpX]!=0){
+        ui->testLabel2->setText("Field is full!");
         return 0;
 
+    }
+
     if(tmpY==5) {
+        ui->testLabel2->setText("");
         return 1;
     }
     else {
         if(matrix[tmpY+1][tmpX]==1 || matrix[tmpY+1][tmpX]==2) {
+            ui->testLabel2->setText("");
             return 1;
-         }
-        else
+        }
+        else{
+
+            ui->testLabel2->setText("Unavailable field!");
             return 0;
+
+        }
     }
 
 }
 
 void MainWindow::insertAtBoard(int x, int y) {
 
-        int tmpX=x/60;
-        int tmpY=y/60;
+    int tmpX=x/60;
+    int tmpY=y/60;
 
 
-        if( restrictionMove(tmpX, tmpY)) {
+    if( restrictionMove(tmpX, tmpY)) {
 
-            if(player) {  //red player
+        if(player==1) {  //red player
 
-                QPixmap kuglica(":/grafika/r1.png");
-                QLabel * temp = new QLabel(this);
+            QPixmap kuglica(":/grafika/r1.png");
+            QLabel * temp = new QLabel(this);
 
-                temp->setPixmap(kuglica);
-                temp->resize(60, 60);
-                ui->gridLayout->addWidget(temp, tmpY, tmpX);
-                matrix[tmpY][tmpX]=1;
+            temp->setPixmap(kuglica);
+            temp->resize(60, 60);
+            ui->gridLayout->addWidget(temp, tmpY, tmpX);
+            matrix[tmpY][tmpX]=1;
 
-                if(checkForWinner(tmpY,tmpX,1)){
-                    ui->testLabel2->setText("Player 1 wins");
-                    endGame(1);
-                    return;
-                }
-
-                if(isComputer) {
-                    computerPlaying(tmpY,tmpX);
-                }
-                else{
-                    player=0;
-                }
-            }
-            //player 2
-            else {
-
-               QPixmap kuglica(":/grafika/blue.png");
-               QLabel * temp=new QLabel(this);
-               temp->resize(60, 60);
-               temp->setPixmap(kuglica);
-
-               // TODO:
-               ui->gridLayout->addWidget(temp, tmpY, tmpX);
-               matrix[tmpY][tmpX]=2;
-
-               if(checkForWinner(tmpY,tmpX,2)){
-                    ui->testLabel2->setText("Player 2 wins");
-                    endGame(2);
-                    return;
-                }
-
-               player=1;
-               if(checkIfEqual())
-                   endGame(0);
-             }
-
-
-
-             for(int m=0;m<6;m++) {
-                for(int k=0;k<7;k++) {
-                    cout << matrix[m][k] <<  " ";
-                }
-                cout << endl;
+            if(checkForWinner(tmpY,tmpX,1)){
+                ui->testLabel2->setText("Player 1 wins");
+                endGame(1);
+                return;
             }
 
-            cout << endl;
-
+            if(isComputer) {
+                computerPlaying(tmpY,tmpX);
+            }
+            else{
+                player=2;
+            }
         }
+        //player 2
+        else if(player==2){
+
+            QPixmap kuglica(":/grafika/blue.png");
+            QLabel * temp=new QLabel(this);
+            temp->resize(60, 60);
+            temp->setPixmap(kuglica);
+
+            // TODO:
+            ui->gridLayout->addWidget(temp, tmpY, tmpX);
+            matrix[tmpY][tmpX]=2;
+
+            if(checkForWinner(tmpY,tmpX,2)){
+                ui->testLabel2->setText("Player 2 wins");
+                endGame(2);
+                return;
+            }
+
+            player=1;
+            if(checkIfEqual())
+                endGame(0);
+        }
+
+
+
+        for(int m=0;m<6;m++) {
+            for(int k=0;k<7;k++) {
+                cout << matrix[m][k] <<  " ";
+            }
+            cout << endl;
+        }
+
+        cout << endl;
+
+    }
 
 }
 
@@ -153,7 +160,7 @@ bool MainWindow::checkRows(int x, int player)
         if(counter==4)
             return true;
     }
-   return false;
+    return false;
 
 }
 
@@ -234,7 +241,7 @@ bool MainWindow::checkDiagonal(int x,int y,int player)
         else if(matrix[x][y]==player)
             counter2++;
         if(counter+counter2==4)
-             break;
+            break;
         x++;
         y--;
     }
@@ -248,13 +255,13 @@ void MainWindow::endGame(int pl)
 {
 
     QMessageBox msgBox;
-    if(pl==2)
-        msgBox.setText("Blue player wins.\nCongratulations!");
-    else if(pl==1) {
+    if(pl==1)
+        msgBox.setText("Red player wins.\nCongratulations!");
+    else if(pl==2) {
         if(isComputer)
             msgBox.setText("Computer wins.\nTry again!");
         else
-            msgBox.setText("Red player wins.\nCongratulations!");
+            msgBox.setText("Blue player wins.\nCongratulations!");
     }
 
     else msgBox.setText("It's a tie!");
@@ -264,7 +271,7 @@ void MainWindow::endGame(int pl)
     msgBox.addButton("Quit",QMessageBox::RejectRole);
     int retVal = msgBox.exec();
 
-    if(retVal==0) //quit
+    if(retVal==0)
         newGame();
     else
         this->close();
@@ -278,7 +285,7 @@ void MainWindow::newGame()
 
     if(gameType() == 0){
         isComputer=true;
-     gameLevel();
+        gameLevel();
     }
 
     for(int i=0;i<6;i++)
@@ -288,8 +295,8 @@ void MainWindow::newGame()
     QLayoutItem *tmp;
     while((tmp=ui->gridLayout->takeAt(0))!=0)
     {
-       delete tmp->widget();
-       delete tmp;
+        delete tmp->widget();
+        delete tmp;
     }
     ui->testLabel2->setText("");
 }
@@ -306,10 +313,11 @@ int MainWindow::gameType()
     int retVal = msgBox.exec();
 
     if(retVal==0){
+        // with computer
         return 0;
-        gameLevel();
     }
     else {
+        // with player 2
         return 1;
     }
 }
@@ -318,11 +326,11 @@ bool MainWindow::checkIfEqual()
 {
 
     for(int m=0;m<6;m++) {
-       for(int k=0;k<7;k++) {
-           if(matrix[m][k]==0)
-               return false;
-       }
-   }
+        for(int k=0;k<7;k++) {
+            if(matrix[m][k]==0)
+                return false;
+        }
+    }
     return true;
 
 }
@@ -348,9 +356,9 @@ void MainWindow::computerPlaying(int tmpX, int tmpY)
 
     if(checkForWinner(Xcor,Ycor,2)){
         ui->testLabel2->setText("Computer wins!");
-        endGame(1);
+        endGame(2);
 
-        }
+    }
 }
 
 int MainWindow::minMaxMax(int alpha, int beta, int tmpX, int tmpY, int depth)
@@ -371,39 +379,39 @@ int MainWindow::minMaxMax(int alpha, int beta, int tmpX, int tmpY, int depth)
     int  best_i = tmpX;
     int  best_j = tmpY;
 
-         for (int i=0;i<6;i++){
-              for (int j=0;j<7;j++){
-                  if (matrix[i][j]==0 && restrictionMove(j,i)!=0){
+    for (int i=0;i<6;i++){
+        for (int j=0;j<7;j++){
+            if (matrix[i][j]==0 && restrictionMove(j,i)!=0){
 
-                       matrix[i][j]=2;
-
-
-                      int m = minMaxMin(alpha, beta,i,j,depth+1);
+                matrix[i][j]=2;
 
 
-                       if (m > v){
-                           v = m;
-                           best_i = i;
-                           best_j = j;
-                       }
-                       if (v >= beta){
-                           Xcor = best_i;
-                           Ycor = best_j;
-                           matrix[i][j]=0;
-                           return v;
-                        }
-                       if (v > alpha)
-                           alpha = v;
+                int m = minMaxMin(alpha, beta,i,j,depth+1);
 
-                      matrix[i][j]=0;
-                  }
+
+                if (m > v){
+                    v = m;
+                    best_i = i;
+                    best_j = j;
                 }
-         }
+                if (v >= beta){
+                    Xcor = best_i;
+                    Ycor = best_j;
+                    matrix[i][j]=0;
+                    return v;
+                }
+                if (v > alpha)
+                    alpha = v;
 
-         Xcor = best_i;
-         Ycor = best_j;
+                matrix[i][j]=0;
+            }
+        }
+    }
 
-         return v;
+    Xcor = best_i;
+    Ycor = best_j;
+
+    return v;
 
 
 
@@ -420,42 +428,50 @@ int MainWindow::minMaxMin(int alpha,int beta,int tmpX,int tmpY,int depth)
     else if (checkIfEqual())
         return 0;
 
-            int v = INT_MAX;
+    int v = INT_MAX;
 
-           for (int i=0;i<6;i++){
-                for (int j=0;j<7;j++){
-                    if (matrix[i][j]==0 && restrictionMove(j,i)!=0){
-                       matrix[i][j]=1;
-                       int  M = minMaxMax(alpha, beta,i,j,depth+1);
-                        if (M < v)
-                            v = M;
+    for (int i=0;i<6;i++){
+        for (int j=0;j<7;j++){
+            if (matrix[i][j]==0 && restrictionMove(j,i)!=0){
+                matrix[i][j]=1;
+                int  M = minMaxMax(alpha, beta,i,j,depth+1);
+                if (M < v)
+                    v = M;
 
-                        if (v <= alpha){
-                            matrix[i][j]=0;
-                            return v;
-                        }
-                        if (v <beta){
-                            beta= v;
-                        }
-                        matrix[i][j]=0;
-                    }
+                if (v <= alpha){
+                    matrix[i][j]=0;
+                    return v;
                 }
+                if (v <beta){
+                    beta= v;
+                }
+                matrix[i][j]=0;
             }
-            return v;
+        }
+    }
+    return v;
 
 }
 int MainWindow::countConnected()
 {
+    // ideja funkcije preuzeta sa interneta i prilagodjena nasem projektu
 
+
+    //counting how many are connected
+
+    //blue
     int computerScore=1;
+    //total score
     int score=0;
     int zeros = 0;
     int k=0, movesLeft=0;
+
     for(int i=5;i>=0;--i){
         for(int j=0;j<7;++j){
 
             if(matrix[i][j]==0 || matrix[i][j]==1)
                 continue;
+            //right
 
             if(j<=3){
                 for(k=1;k<4;++k){
@@ -470,15 +486,15 @@ int MainWindow::countConnected()
                     else
                         zeros++;
                 }
-
+//right-down
                 movesLeft = 0;
                 if(zeros>0)
                     for(int c=1;c<4;++c){
                         int column = j+c;
                         for(int m=i; m<= 5;m++)
                         {
-                         if(matrix[m][column]==0)
-                             movesLeft++;
+                            if(matrix[m][column]==0)
+                                movesLeft++;
                             else break;
                         }
                     }
@@ -488,7 +504,7 @@ int MainWindow::countConnected()
                 computerScore=1;
                 zeros = 0;
             }
-
+//up
             if(i>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i-k][j]==2)
@@ -504,17 +520,17 @@ int MainWindow::countConnected()
                 if(computerScore>0){
                     int column = j;
                     for(int m=i-k+1; m<=i-1;m++){
-                     if(matrix[m][column]==0)
-                         movesLeft++;
+                        if(matrix[m][column]==0)
+                            movesLeft++;
                         else
-                         break;
+                            break;
                     }
                 }
                 if(movesLeft!=0) score += calculateScore(computerScore, movesLeft);
                 computerScore=1;
                 zeros = 0;
             }
-
+//left
             if(j>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i][j-k]==2)
@@ -527,12 +543,13 @@ int MainWindow::countConnected()
                     }
                     else zeros++;
                 }
+//left-down
                 movesLeft=0;
                 if(zeros>0)
                     for(int c=1;c<4;++c){
                         int column = j- c;
                         for(int m=i; m<= 5;m++){
-                         if(matrix[m][column]==0)movesLeft++;
+                            if(matrix[m][column]==0)movesLeft++;
                             else break;
                         }
                     }
@@ -541,13 +558,19 @@ int MainWindow::countConnected()
                 computerScore=1;
                 zeros = 0;
             }
-
+//upper-right diagonal
             if(j<=3 && i>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i-k][j+k]==2)computerScore++;
-                    else if(matrix[i-k][j+k]==1){computerScore=0;zeros=0;break;}
+                    else if(matrix[i-k][j+k]==1)
+                    {
+                        computerScore=0;
+                        zeros=0;
+                        break;
+                    }
                     else zeros++;
                 }
+//zeros count
                 movesLeft=0;
                 if(zeros>0){
                     for(int c=1;c<4;++c){
@@ -563,7 +586,7 @@ int MainWindow::countConnected()
                     zeros = 0;
                 }
             }
-
+//upper-left diagonal
             if(i>=3 && j>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i-k][j-k]==2)
@@ -595,22 +618,22 @@ int MainWindow::countConnected()
             }
         }
     }
-return score;
+    return score;
 
 }
 
 int MainWindow::calculateScore(int computerScore, int movesLeft){
-       int moveScore = 4 - movesLeft;
-       if(computerScore==0)
-           return 0;
-       else if(computerScore==1)
-           return 1*moveScore;
-       else if(computerScore==2)
-           return 10*moveScore;
-       else if(computerScore==3)
-           return 100*moveScore;
-       else
-           return 1000;
+    int moveScore = 4 - movesLeft;
+    if(computerScore==0)
+        return 0;
+    else if(computerScore==1)
+        return 1*moveScore;
+    else if(computerScore==2)
+        return 10*moveScore;
+    else if(computerScore==3)
+        return 100*moveScore;
+    else
+        return 1000;
 }
 
 void MainWindow::gameLevel()
@@ -626,7 +649,7 @@ void MainWindow::gameLevel()
     int retVal = msgBox.exec();
 
     if(retVal==0){
-        maxDepth = 4;
+        maxDepth = 2;
     }
     else if (retVal == 1){
         maxDepth=6;
