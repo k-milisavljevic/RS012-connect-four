@@ -6,6 +6,7 @@
 #include<QDebug>
 #include<QEvent>
 #include<QLabel>
+
 class fields : public QLabel
 {
     Q_OBJECT

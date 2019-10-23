@@ -24,7 +24,6 @@ private:
     Ui::MainWindow *ui;
     int player;
     int Xcor;
-    int minX,minY;
     int Ycor;
     bool isComputer;
     int maxDepth;

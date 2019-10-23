@@ -67,7 +67,6 @@ int MainWindow::restrictionMove(int tmpX,int tmpY){
 
             ui->testLabel2->setText("Unavailable field!");
             return 0;
-
         }
     }
 
@@ -322,6 +321,7 @@ int MainWindow::gameType()
     }
 }
 
+
 bool MainWindow::checkIfEqual()
 {
 
@@ -334,7 +334,6 @@ bool MainWindow::checkIfEqual()
     return true;
 
 }
-
 
 void MainWindow::computerPlaying(int tmpX, int tmpY)
 {
@@ -349,7 +348,6 @@ void MainWindow::computerPlaying(int tmpX, int tmpY)
     //AI alghoritm
 
     minMaxMax(INT_MIN,INT_MAX,tmpX,tmpY,0);
-    //cout <<" Xcor: " << Xcor <<" Ycor: " << Ycor << endl;
 
     ui->gridLayout->addWidget(temp, Xcor, Ycor);
     matrix[Xcor][Ycor]=2;
@@ -417,7 +415,6 @@ int MainWindow::minMaxMax(int alpha, int beta, int tmpX, int tmpY, int depth)
 
 }
 
-
 int MainWindow::minMaxMin(int alpha,int beta,int tmpX,int tmpY,int depth)
 {
     // mi pobedili
@@ -452,6 +449,7 @@ int MainWindow::minMaxMin(int alpha,int beta,int tmpX,int tmpY,int depth)
     return v;
 
 }
+
 int MainWindow::countConnected()
 {
     // ideja funkcije preuzeta sa interneta i prilagodjena nasem projektu
@@ -459,22 +457,23 @@ int MainWindow::countConnected()
 
     //counting how many are connected
 
-    //blue
+    //connected blue dots
     int computerScore=1;
     //total score
-    int score=0;
+    int score = 0;
     int zeros = 0;
-    int k=0, movesLeft=0;
+    int k = 0, movesLeft = 0;
 
     for(int i=5;i>=0;--i){
         for(int j=0;j<7;++j){
 
             if(matrix[i][j]==0 || matrix[i][j]==1)
                 continue;
-            //right
 
+            //right
             if(j<=3){
-                for(k=1;k<4;++k){
+
+                for(k=1;k<4;++k) {
                     if(matrix[i][j+k]==2)
                         computerScore++;
                     else if(matrix[i][j+k]==1)
@@ -486,7 +485,8 @@ int MainWindow::countConnected()
                     else
                         zeros++;
                 }
-//right-down
+
+                //right-down area
                 movesLeft = 0;
                 if(zeros>0)
                     for(int c=1;c<4;++c){
@@ -504,7 +504,8 @@ int MainWindow::countConnected()
                 computerScore=1;
                 zeros = 0;
             }
-//up
+
+            //up
             if(i>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i-k][j]==2)
@@ -522,15 +523,15 @@ int MainWindow::countConnected()
                     for(int m=i-k+1; m<=i-1;m++){
                         if(matrix[m][column]==0)
                             movesLeft++;
-                        else
-                            break;
+                        else break;
                     }
                 }
                 if(movesLeft!=0) score += calculateScore(computerScore, movesLeft);
                 computerScore=1;
                 zeros = 0;
             }
-//left
+
+            //left
             if(j>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i][j-k]==2)
@@ -543,13 +544,13 @@ int MainWindow::countConnected()
                     }
                     else zeros++;
                 }
-//left-down
+                //left-down area
                 movesLeft=0;
                 if(zeros>0)
                     for(int c=1;c<4;++c){
                         int column = j- c;
                         for(int m=i; m<= 5;m++){
-                            if(matrix[m][column]==0)movesLeft++;
+                            if(matrix[m][column]==0) movesLeft++;
                             else break;
                         }
                     }
@@ -558,10 +559,12 @@ int MainWindow::countConnected()
                 computerScore=1;
                 zeros = 0;
             }
-//upper-right diagonal
+
+            //upper-right diagonal
             if(j<=3 && i>=3){
                 for(k=1;k<4;++k){
-                    if(matrix[i-k][j+k]==2)computerScore++;
+                    if(matrix[i-k][j+k]==2)
+                        computerScore++;
                     else if(matrix[i-k][j+k]==1)
                     {
                         computerScore=0;
@@ -570,14 +573,16 @@ int MainWindow::countConnected()
                     }
                     else zeros++;
                 }
-//zeros count
+
+                //zeros count
                 movesLeft=0;
                 if(zeros>0){
                     for(int c=1;c<4;++c){
-                        int column = j+c, row = i-c;
+                        int column = j+c;
+                        int row = i-c;
+
                         for(int m=row;m<=5;++m){
-                            if(matrix[m][column]==0)movesLeft++;
-                            else if(matrix[m][column]==2);
+                            if(matrix[m][column]==0) movesLeft++;
                             else break;
                         }
                     }
@@ -586,7 +591,8 @@ int MainWindow::countConnected()
                     zeros = 0;
                 }
             }
-//upper-left diagonal
+
+            //upper-left diagonal
             if(i>=3 && j>=3){
                 for(k=1;k<4;++k){
                     if(matrix[i-k][j-k]==2)
@@ -607,7 +613,6 @@ int MainWindow::countConnected()
                         for(int m=row;m<=5;++m){
                             if(matrix[m][column]==0)
                                 movesLeft++;
-                            else if(matrix[m][column]==2);
                             else break;
                         }
                     }
@@ -649,7 +654,7 @@ void MainWindow::gameLevel()
     int retVal = msgBox.exec();
 
     if(retVal==0){
-        maxDepth = 2;
+        maxDepth = 4;
     }
     else if (retVal == 1){
         maxDepth=6;
